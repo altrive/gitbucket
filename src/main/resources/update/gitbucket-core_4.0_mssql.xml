@@ -142,7 +142,7 @@
   <addPrimaryKey constraintName="IDX_COMMIT_STATUS_PK" tableName="COMMIT_STATUS" columnNames="COMMIT_STATUS_ID"/>
   <addUniqueConstraint constraintName="IDX_COMMIT_STATUS_1" tableName="COMMIT_STATUS" columnNames="USER_NAME, REPOSITORY_NAME, COMMIT_ID, CONTEXT"/>
   <addForeignKeyConstraint constraintName="IDX_COMMIT_STATUS_FK3" baseTableName="COMMIT_STATUS" baseColumnNames="CREATOR" referencedTableName="ACCOUNT" referencedColumnNames="USER_NAME" onDelete="CASCADE" onUpdate="CASCADE"/>
-  <addForeignKeyConstraint constraintName="IDX_COMMIT_STATUS_FK2" baseTableName="COMMIT_STATUS" baseColumnNames="USER_NAME" referencedTableName="ACCOUNT" referencedColumnNames="USER_NAME" onDelete="CASCADE" onUpdate="CASCADE"/>
+  <addForeignKeyConstraint constraintName="IDX_COMMIT_STATUS_FK2" baseTableName="COMMIT_STATUS" baseColumnNames="USER_NAME" referencedTableName="ACCOUNT" referencedColumnNames="USER_NAME" onDelete="NO ACTION" onUpdate="NO ACTION"/>
   <addForeignKeyConstraint constraintName="IDX_COMMIT_STATUS_FK1" baseTableName="COMMIT_STATUS" baseColumnNames="USER_NAME, REPOSITORY_NAME" referencedTableName="REPOSITORY" referencedColumnNames="USER_NAME, REPOSITORY_NAME" onDelete="CASCADE" onUpdate="CASCADE"/>
 
   <!--================================================================================================-->
@@ -207,6 +207,11 @@
   </createTable>
 
   <addPrimaryKey constraintName="IDX_ISSUE_PK" tableName="ISSUE" columnNames="ISSUE_ID, USER_NAME, REPOSITORY_NAME"/>
+  <createIndex indexName="IDX_ISSUE_1" tableName="ISSUE"  unique="true">
+    <column name="USER_NAME"/>
+    <column name="REPOSITORY_NAME"/>
+    <column name="ISSUE_ID"/>
+  </createIndex>
   <addForeignKeyConstraint constraintName="IDX_ISSUE_FK0" baseTableName="ISSUE" baseColumnNames="USER_NAME, REPOSITORY_NAME" referencedTableName="REPOSITORY" referencedColumnNames="USER_NAME, REPOSITORY_NAME"/>
   <addForeignKeyConstraint constraintName="IDX_ISSUE_FK2" baseTableName="ISSUE" baseColumnNames="MILESTONE_ID" referencedTableName="MILESTONE" referencedColumnNames="MILESTONE_ID"/>
   <addForeignKeyConstraint constraintName="IDX_ISSUE_FK1" baseTableName="ISSUE" baseColumnNames="OPENED_USER_NAME" referencedTableName="ACCOUNT" referencedColumnNames="USER_NAME"/>

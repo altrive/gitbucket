@@ -9,24 +9,27 @@
     </addColumn>
     <update tableName="REPOSITORY">
         <column name="WIKI_OPTION" value="DISABLE"/>
-        <where>ENABLE_WIKI = FALSE</where>
+        <where>ENABLE_WIKI = 'FALSE'</where>
     </update>
     <update tableName="REPOSITORY">
         <column name="WIKI_OPTION" value="PRIVATE"/>
-        <where>ENABLE_WIKI = TRUE AND ALLOW_WIKI_EDITING = FALSE</where>
+        <where>ENABLE_WIKI = 'TRUE' AND ALLOW_WIKI_EDITING = 'FALSE'</where>
     </update>
     <update tableName="REPOSITORY">
         <column name="WIKI_OPTION" value="PUBLIC"/>
-        <where>ENABLE_WIKI = TRUE AND ALLOW_WIKI_EDITING = TRUE</where>
+        <where>ENABLE_WIKI = 'TRUE' AND ALLOW_WIKI_EDITING = 'TRUE'</where>
     </update>
     <update tableName="REPOSITORY">
         <column name="ISSUES_OPTION" value="DISABLE"/>
-        <where>ENABLE_ISSUES = FALSE</where>
+        <where>ENABLE_ISSUES = 'FALSE'</where>
     </update>
     <update tableName="REPOSITORY">
         <column name="ISSUES_OPTION" value="PUBLIC"/>
-        <where>ENABLE_ISSUES = TRUE</where>
+        <where>ENABLE_ISSUES = 'TRUE'</where>
     </update>
+    <dropDefaultValue tableName="REPOSITORY" columnName="ENABLE_WIKI"/>
+    <dropDefaultValue tableName="REPOSITORY" columnName="ALLOW_WIKI_EDITING"/>
+    <dropDefaultValue tableName="REPOSITORY" columnName="ENABLE_ISSUES"/>
     <dropColumn tableName="REPOSITORY" columnName="ENABLE_WIKI"/>
     <dropColumn tableName="REPOSITORY" columnName="ALLOW_WIKI_EDITING"/>
     <dropColumn tableName="REPOSITORY" columnName="ENABLE_ISSUES"/>
