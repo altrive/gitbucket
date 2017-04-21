@@ -32,6 +32,7 @@ install:
       SET JAVA_HOME=C:\Users\appveyor\scoop\apps\openjdk\current\bin
       SET PATH=%JAVA_HOME%\bin;%PATH%
       SET M2_HOME=%USERPROFILE%\.m2
+      where java
       SET 
 build_script:
   - sbt compile
@@ -46,7 +47,6 @@ after_test:
           (New-Object 'System.Net.WebClient').UploadFile($url, (Resolve-Path $file))
       }
 on_success:
-  - cmd: dir %LocalAppData%\
   - sbt executable
 cache:
   - '%USERPROFILE%\.m2'
