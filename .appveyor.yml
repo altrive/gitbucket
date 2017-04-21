@@ -15,7 +15,7 @@ branches:
     - gh-pages
 install:
   - ps: |
-    Write-Host ("PROCESSOR_ARCHITECTURE = {0}" -f $env:PROCESSOR_ARCHITECTURE)
+      Write-Host ("PROCESSOR_ARCHITECTURE = {0}" -f $env:PROCESSOR_ARCHITECTURE)
   - ps: |
       (Get-PSProvider 'FileSystem').Home = 'c:\projects\'
       iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
