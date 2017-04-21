@@ -52,6 +52,7 @@ libraryDependencies ++= Seq(
   "net.coobird"                     %  "thumbnailator"                % "0.4.8",
   "org.eclipse.jetty"               %  "jetty-webapp"                 % JettyVersion     % "provided",
   "javax.servlet"                   %  "javax.servlet-api"            % "3.1.0"          % "provided",
+  "net.java.dev.jna"                %  "jna"                          % "4.4.0"          % "test",
   "junit"                           %  "junit"                        % "4.12"           % "test",
   "org.scalatra"                    %% "scalatra-scalatest"           % ScalatraVersion  % "test",
   "org.mockito"                     %  "mockito-core"                 % "2.7.16"         % "test",

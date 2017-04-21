@@ -2,9 +2,9 @@ version: '{build}'
 image: Visual Studio 2017
 platform:
   - x86
-  - x64
+#  - x64
 services:
-  - mssql2016
+#  - mssql2016
 # - postgresql
 # - mysql
 #environment:
@@ -16,11 +16,11 @@ branches:
 install:
   - ps: |
       Write-Host ("PROCESSOR_ARCHITECTURE = {0}" -f $env:PROCESSOR_ARCHITECTURE)
-  - ps: |
+  - ps: >-
       (Get-PSProvider 'FileSystem').Home = 'c:\projects\'
       iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
       scoop update
-      scoop install openjdk
+      #scoop install openjdk
       #scoop install ant
       #scoop install maven
       scoop install scala
@@ -28,8 +28,9 @@ install:
       # Following software are installed by default <https://www.appveyor.com/docs/build-environment/#pre-installed-software>
       # - JDK8
       # - Maven
-  - cmd: |
-      SET JAVA_HOME=C:\Users\appveyor\scoop\apps\openjdk\current\bin
+  - cmd: >-
+      SET JAVA_HOME=%ProgramFiles%\Java\jdk1.8.0
+      #SET JAVA_HOME=C:\Users\appveyor\scoop\apps\openjdk\current\bin
       SET PATH=%JAVA_HOME%\bin;%PATH%
       SET M2_HOME=%USERPROFILE%\.m2
       where java
@@ -40,7 +41,7 @@ test_script:
   - sbt test
   - ps: Get-ChildItem $env:USERPROFILE
 after_test:
-  - ps: |
+  - ps: >-
       $url = "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)"
       $files = Get-ChildItem '.\target\test-reports\TEST-*.xml'
       foreach ($file in $files) {
