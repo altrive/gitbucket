@@ -15,16 +15,18 @@ branches:
     - gh-pages
 install:
   - ps: |
-      (get-psprovider 'FileSystem').Home = 'c:\projects\'
+    Write-Host ("PROCESSOR_ARCHITECTURE = {0}" -f $env:PROCESSOR_ARCHITECTURE)
+  - ps: |
+      (Get-PSProvider 'FileSystem').Home = 'c:\projects\'
       iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
       scoop update
-      scoop install -y openjdk
-      scoop install -y ant
-      scoop install -y maven
-      scoop install -y scala
-      scoop install -y sbt
+      scoop install openjdk
+      scoop install ant
+      scoop install maven
+      scoop install scala
+      scoop install sbt
       Get-ChildItem $env:USERPROFILE
-      # Followin software are installed by default <https://www.appveyor.com/docs/build-environment/#pre-installed-software>
+      # Following software are installed by default <https://www.appveyor.com/docs/build-environment/#pre-installed-software>
       # - JDK8
       # - Maven
   - cmd: |
