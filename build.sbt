@@ -61,8 +61,7 @@ libraryDependencies ++= Seq(
 
 // Compiler settings
 scalacOptions := Seq("-deprecation", "-language:postfixOps")
-javacOptions in compile ++= Seq("-target", "8", "-source", "8")
-javacOptions in compile += "-Djna.nosys=true"
+javacOptions in compile ++= Seq("-target", "8", "-source", "8", "-Djna.nosys=true")
 javaOptions in Jetty += "-Dlogback.configurationFile=/logback-dev.xml"
 
 // Test settings
