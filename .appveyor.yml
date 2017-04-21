@@ -6,7 +6,7 @@ services:
   - mysql
 environment:
   global:
-    - TEST_DBMS_SQLServer: true
+    TEST_DBMS_SQLServer: true
 branches:
   except: 
     - gh-pages
