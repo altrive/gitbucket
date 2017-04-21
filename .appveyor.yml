@@ -30,7 +30,6 @@ install:
       # - Maven
   - cmd: |
       SET JAVA_HOME=%ProgramFiles%\Java\jdk1.8.0
-      #SET JAVA_HOME=C:\Users\appveyor\scoop\apps\openjdk\current\bin
       SET PATH=%JAVA_HOME%\bin;%PATH%
       SET M2_HOME=%USERPROFILE%\.m2
       where java
