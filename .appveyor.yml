@@ -1,5 +1,5 @@
 version: '{build}'
-os: Windows Server 2016
+image: Visual Studio 2017
 services:
   - mssql2016
   - postgresql
