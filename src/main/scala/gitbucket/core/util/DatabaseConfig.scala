@@ -4,9 +4,9 @@ import com.typesafe.config.ConfigFactory
 import java.io.File
 
 import Directory._
-import com.github.takezoe.slick.blocking.{BlockingH2Driver, BlockingMySQLDriver, BlockingJdbcProfile}
+import com.github.takezoe.slick.blocking.{BlockingH2Driver, BlockingMySQLDriver, BlockingJdbcProfile, BlockingSQLServerDriver}
 import liquibase.database.AbstractJdbcDatabase
-import liquibase.database.core.{H2Database, MySQLDatabase, PostgresDatabase}
+import liquibase.database.core.{H2Database, MySQLDatabase, PostgresDatabase, MSSQLDatabase}
 import org.apache.commons.io.FileUtils
 
 object DatabaseConfig {
@@ -68,6 +68,8 @@ object DatabaseType {
       MySQL
     } else if(url.startsWith("jdbc:postgresql:")){
       PostgreSQL
+    } else if(url.startsWith("jdbc:sqlserver:")){
+      SQLServer
     } else {
       throw new IllegalArgumentException(s"${url} is not supported.")
     }
@@ -89,6 +91,12 @@ object DatabaseType {
     val jdbcDriver = "org.postgresql.Driver2"
     val slickDriver = BlockingPostgresDriver
     val liquiDriver = new PostgresDatabase()
+  }
+
+  object SQLServer extends DatabaseType {
+    val jdbcDriver = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+    val slickDriver = BlockingSQLServerDriver
+    val liquiDriver = new MSSQLDatabase()
   }
 
   object BlockingPostgresDriver extends slick.jdbc.PostgresProfile with BlockingJdbcProfile {

@@ -256,8 +256,11 @@ trait IssuesService {
                   assignedUserName: Option[String], milestoneId: Option[Int],
                   isPullRequest: Boolean = false)(implicit s: Session): Int = {
     // next id number
-    sql"SELECT ISSUE_ID + 1 FROM ISSUE_ID WHERE USER_NAME = $owner AND REPOSITORY_NAME = $repository FOR UPDATE".as[Int]
-      .firstOption.filter { id =>
+    IssueId.filter(_.byPrimaryKey(owner, repository))
+      .forUpdate
+      .map(_.issueId + 1)
+      .firstOption
+      .filter { id =>
       Issues insert Issue(
         owner,
         repository,
