@@ -16,7 +16,7 @@ branches:
 install:
   - ps: >-
       Write-Host ("PROCESSOR_ARCHITECTURE = {0}" -f $env:PROCESSOR_ARCHITECTURE)
-  - ps: >-
+  - ps: |
       (Get-PSProvider 'FileSystem').Home = 'c:\projects\'
       iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
       scoop update
@@ -28,7 +28,7 @@ install:
       # Following software are installed by default <https://www.appveyor.com/docs/build-environment/#pre-installed-software>
       # - JDK8
       # - Maven
-  - cmd: >-
+  - cmd: |
       SET JAVA_HOME=%ProgramFiles%\Java\jdk1.8.0
       #SET JAVA_HOME=C:\Users\appveyor\scoop\apps\openjdk\current\bin
       SET PATH=%JAVA_HOME%\bin;%PATH%
