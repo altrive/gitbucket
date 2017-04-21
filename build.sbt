@@ -61,9 +61,9 @@ libraryDependencies ++= Seq(
 
 // Compiler settings
 scalacOptions := Seq("-deprecation", "-language:postfixOps")
-javacOptions in compile ++= Seq("-target", "8", "-source", "8", "-Djna.nosys=true")
+javacOptions in compile ++= Seq("-target", "8", "-source", "8")
 javaOptions in Jetty += "-Dlogback.configurationFile=/logback-dev.xml"
-
+javaOptions in compile += "-Djna.nosys=true"
 // Test settings
 //testOptions in Test += Tests.Argument("-l", "ExternalDBTest")
 javaOptions in Test += "-Dgitbucket.home=target/gitbucket_home_for_test"
