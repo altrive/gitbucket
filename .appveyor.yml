@@ -6,8 +6,7 @@ services:
   - mysql
 environment:
   global:
-    TEST_DBMS_SQLServer: true
-    SBT_OPTS=-XX:MaxPermSize=2g -Xmx4g
+    - TEST_DBMS_SQLServer: true
 branches:
   except: 
     - gh-pages
@@ -26,9 +25,9 @@ install:
   - cmd: |
       SET JAVA_HOME=C:\Program Files\Java\jdk1.8.0
       SET PATH=%JAVA_HOME%\bin;%PATH%
-      SET M2_HOME=C:\maven\apache-maven-3.2.5
       SET MAVEN_OPTS=-XX:MaxPermSize=2g -Xmx4g
       SET JAVA_OPTS=-XX:MaxPermSize=2g -Xmx4g
+      SET SBT_OPTS=-XX:MaxPermSize=2g -Xmx4g
       SET 
 build_script:
   - sbt clean compile
