@@ -14,7 +14,7 @@ branches:
   except: 
     - gh-pages
 install:
-  - ps: |
+  - ps: >-
       Write-Host ("PROCESSOR_ARCHITECTURE = {0}" -f $env:PROCESSOR_ARCHITECTURE)
   - ps: >-
       (Get-PSProvider 'FileSystem').Home = 'c:\projects\'
