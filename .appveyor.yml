@@ -25,23 +25,16 @@ install:
       #scoop install maven
       scoop install scala
       scoop install sbt
-      Get-ChildItem $env:LocalAppData
-      Get-ChildItem $env:USERPROFILE
-      Get-ChildItem env:
       # Following software are installed by default <https://www.appveyor.com/docs/build-environment/#pre-installed-software>
       # - JDK8
       # - Maven
   - cmd: |
-      where sbt
-      SET JAVA_HOME=%LocalAppData%\scoop\apps\openjdk\current\bin
+      SET JAVA_HOME=C:\Users\appveyor\scoop\apps\openjdk\current\bin
       SET PATH=%JAVA_HOME%\bin;%PATH%
       SET M2_HOME=%USERPROFILE%\.m2
       SET 
 build_script:
   - sbt compile
-on_success:
-  - cmd: dir %LocalAppData%\
-  - sbt executable
 test_script:
   - sbt test
   - ps: Get-ChildItem $env:USERPROFILE
@@ -52,8 +45,10 @@ after_test:
       foreach ($file in $files) {
           (New-Object 'System.Net.WebClient').UploadFile($url, (Resolve-Path $file))
       }
+on_success:
+  - cmd: dir %LocalAppData%\
+  - sbt executable
 cache:
-  - '%LocalAppData%\scoop'
   - '%USERPROFILE%\.m2'
   - '%USERPROFILE%\.ivy\cache'
   - '%USERPROFILE%\.sbt\boot'
