@@ -2,8 +2,8 @@ version: '{build}'
 image: Visual Studio 2017
 services:
   - mssql2016
-  - postgresql
-  - mysql
+# - postgresql
+# - mysql
 environment:
   global:
     TEST_DBMS_SQLServer: true
@@ -14,7 +14,6 @@ install:
   - ps: |
       (get-psprovider 'FileSystem').Home = 'c:\projects\'
       iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
-      # scoop bucket add extras
       scoop update
       scoop install -y ant
       scoop install -y scala
@@ -25,9 +24,6 @@ install:
   - cmd: |
       SET JAVA_HOME=C:\Program Files\Java\jdk1.8.0
       SET PATH=%JAVA_HOME%\bin;%PATH%
-      SET MAVEN_OPTS=-XX:MaxPermSize=2g -Xmx4g
-      SET JAVA_OPTS=-XX:MaxPermSize=2g -Xmx4g
-      SET SBT_OPTS=-XX:MaxPermSize=2g -Xmx4g
       SET 
 build_script:
   - sbt clean compile
@@ -37,8 +33,8 @@ on_success:
   - sbt executable
 cache:
   - C:\Users\appveyor\AppData\Local\scoop
-  - C:\Users\appveyor\.m2   -> appveyor.yml
-  - C:\Users\appveyor\.ivy2 -> appveyor.yml
+  - C:\Users\appveyor\.m2     #-> appveyor.yml
+  - C:\Users\appveyor\.ivy2   #-> appveyor.yml
 artifacts:
   - path: 'target\executable\gitbucket.war'
   - path: 'target\executable\gitbucket.md5'
