@@ -1,5 +1,8 @@
 version: '{build}'
 image: Visual Studio 2017
+platform:
+  - x86
+  - x64
 services:
   - mssql2016
 # - postgresql
@@ -15,21 +18,26 @@ install:
       (get-psprovider 'FileSystem').Home = 'c:\projects\'
       iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
       scoop update
+
+      scoop install -y openjdk
       scoop install -y ant
       scoop install -y maven
       scoop install -y scala
       scoop install -y sbt
+      dir env:USERPROFILE
       # Followin software are installed by default <https://www.appveyor.com/docs/build-environment/#pre-installed-software>
       # - JDK8
       # - Maven
   - cmd: |
-      SET JAVA_HOME=%ProgramFiles%\Java\jdk1.8.0
+      #SET JAVA_HOME=%ProgramFiles%\Java\jdk1.8.0
+      SET JAVA_HOME=%LocalAppData%\scoop\apps\openjdk\current\bin
       SET PATH=%JAVA_HOME%\bin;%PATH%
       SET M2_HOME=%USERPROFILE%\.m2
       SET 
 build_script:
   - sbt compile
 on_success:
+  - cmd: dir %LocalAppData%\
   - sbt executable
 test_script:
   - sbt test
@@ -40,11 +48,11 @@ after_test:
       foreach ($file in $files) {
           (New-Object 'System.Net.WebClient').UploadFile($url, (Resolve-Path $file))
       }
-      dir
 cache:
   - '%LocalAppData%\scoop'
   - '%USERPROFILE%\.m2'
   - '%USERPROFILE%\.ivy2'
+  - '%USERPROFILE%\.sbt'
   - '%USERPROFILE%\.embedmysql'
   - '%USERPROFILE%\.embedpostgresql'
 #  - '%LocalAppData%\scoop            -> appveyor.yml'
