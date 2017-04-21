@@ -54,8 +54,8 @@ after_test:
 cache:
   - '%LocalAppData%\scoop'
   - '%USERPROFILE%\.m2'
-  - '%USERPROFILE%\.ivy2'
-  - '%USERPROFILE%\.sbt'
+  - '%USERPROFILE%\.ivy\cache'
+  - '%USERPROFILE%\.sbt\boot'
   - '%USERPROFILE%\.embedmysql'
   - '%USERPROFILE%\.embedpostgresql'
 #  - '%LocalAppData%\scoop            -> appveyor.yml'
