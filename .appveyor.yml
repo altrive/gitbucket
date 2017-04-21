@@ -1,5 +1,5 @@
 version: '{build}'
-os: Windows Server 2012
+os: Windows Server 2016
 services:
   - mssql2016
 # - postgresql
@@ -39,12 +39,18 @@ after_test:
       foreach ($file in $files) {
           (New-Object 'System.Net.WebClient').UploadFile($url, (Resolve-Path $file))
       }
+      dir
 cache:
-  - '%LocalAppData%\scoop            -> appveyor.yml'
-  - '%USERPROFILE%\.m2               -> appveyor.yml'
-  - '%USERPROFILE%\.ivy2             -> appveyor.yml'
-  - '%USERPROFILE%\.embedmysql       -> appveyor.yml'
-  - '%USERPROFILE%\.embedpostgresql  -> appveyor.yml'
+  - '%LocalAppData%\scoop'
+  - '%USERPROFILE%\.m2'
+  - '%USERPROFILE%\.ivy2'
+  - '%USERPROFILE%\.embedmysql'
+  - '%USERPROFILE%\.embedpostgresql'
+#  - '%LocalAppData%\scoop            -> appveyor.yml'
+#  - '%USERPROFILE%\.m2               -> appveyor.yml'
+#  - '%USERPROFILE%\.ivy2             -> appveyor.yml'
+#  - '%USERPROFILE%\.embedmysql       -> appveyor.yml'
+#  - '%USERPROFILE%\.embedpostgresql  -> appveyor.yml'
 artifacts:
   - path: 'target\executable\gitbucket.war'
   - path: 'target\executable\gitbucket.md5'
