@@ -16,6 +16,7 @@ install:
       iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
       scoop update
       scoop install -y ant
+      scoop install -y maven
       scoop install -y scala
       scoop install -y sbt
       # Followin software are installed by default <https://www.appveyor.com/docs/build-environment/#pre-installed-software>
@@ -27,7 +28,7 @@ install:
       SET M2_HOME=%USERPROFILE%\.m2
       SET 
 build_script:
-  - sbt clean compile
+  - sbt compile
 on_success:
   - sbt executable
 test_script:
