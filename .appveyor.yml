@@ -7,9 +7,9 @@ services:
   - mssql2016
 # - postgresql
 # - mysql
-environment:
-  global:
-    TEST_DBMS_SQLServer: true
+#environment:
+#  global:
+#    TEST_DBMS_SQLServer: true
 branches:
   except: 
     - gh-pages
@@ -27,11 +27,12 @@ install:
       scoop install sbt
       Get-ChildItem $env:LocalAppData
       Get-ChildItem $env:USERPROFILE
+      Get-ChildItem env:
       # Following software are installed by default <https://www.appveyor.com/docs/build-environment/#pre-installed-software>
       # - JDK8
       # - Maven
   - cmd: |
-      ::SET JAVA_HOME=%ProgramFiles%\Java\jdk1.8.0
+      where sbt
       SET JAVA_HOME=%LocalAppData%\scoop\apps\openjdk\current\bin
       SET PATH=%JAVA_HOME%\bin;%PATH%
       SET M2_HOME=%USERPROFILE%\.m2
