@@ -21,10 +21,11 @@ install:
       iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
       scoop update
       scoop install openjdk
-      scoop install ant
-      scoop install maven
+      #scoop install ant
+      #scoop install maven
       scoop install scala
       scoop install sbt
+      Get-ChildItem $env:LocalAppData
       Get-ChildItem $env:USERPROFILE
       # Following software are installed by default <https://www.appveyor.com/docs/build-environment/#pre-installed-software>
       # - JDK8
