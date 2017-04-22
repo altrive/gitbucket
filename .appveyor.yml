@@ -10,11 +10,13 @@ services:
 branches:
   except: 
     - gh-pages
-init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+#init:
+#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 install:
   - ps: |
       Write-Host ("PROCESSOR_ARCHITECTURE = {0}" -f $env:PROCESSOR_ARCHITECTURE)
+      net user /add TestUser Password!
+      net localgroup Administrators Testuser /add
   - ps: |
       (Get-PSProvider 'FileSystem').Home = 'c:\projects\'
       iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
@@ -33,10 +35,15 @@ install:
       SET M2_HOME=%USERPROFILE%\.m2
       SET 
 build_script:
-  - sbt compile
+#  - sbt compile
+  - ps: 
+    $p = Start-Process "sbt" -ArgumentList "compile" -PassThru -Wait
+    return $p.ExitCode
 test_script:
-  - sbt test
-  - ps: Get-ChildItem $env:USERPROFILE
+#  - sbt test
+  - ps: 
+    $p = Start-Process "sbt" -ArgumentList "test" -PassThru -Wait
+    return $p.ExitCode
 after_test:
   - ps: |
       $url = "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)"
@@ -49,11 +56,15 @@ on_success:
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 cache:
-  - 'C:\Users\appveyor\.m2'
+  - 'C:\Users\appveyor\.coursier'
   - 'C:\Users\appveyor\.ivy\cache'
   - 'C:\Users\appveyor\.sbt\boot'
-  - 'C:\Users\appveyor\.embedmysql'
-  - 'C:\Users\appveyor\.embedmysql'
+  - 'C:\Users\TestUser\.coursier'
+  - 'C:\Users\TestUser\.ivy\cache'
+  - 'C:\Users\TestUser\.sbt\boot'
+  - 'C:\Users\TestUser\.embedmysql'
+  - 'C:\Users\TestUser\.embedpostgresql'
+  
   
 #  - '%LocalAppData%\scoop            -> appveyor.yml'
 #  - '%USERPROFILE%\.m2               -> appveyor.yml'
