@@ -37,13 +37,13 @@ install:
 build_script:
 #  - sbt compile
   - ps: |
-    $p = Start-Process "sbt" -ArgumentList "compile" -PassThru -Wait
-    return $p.ExitCode
+      $p = Start-Process "sbt" -ArgumentList "compile" -PassThru -Wait
+      return $p.ExitCode
 test_script:
 #  - sbt test
   - ps: |
-    $p = Start-Process "sbt" -ArgumentList "test" -PassThru -Wait
-    return $p.ExitCode
+      $p = Start-Process "sbt" -ArgumentList "test" -PassThru -Wait
+      return $p.ExitCode
 after_test:
   - ps: |
       $url = "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)"
