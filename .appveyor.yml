@@ -10,6 +10,8 @@ services:
 branches:
   except: 
     - gh-pages
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 install:
   - ps: |
       Write-Host ("PROCESSOR_ARCHITECTURE = {0}" -f $env:PROCESSOR_ARCHITECTURE)
@@ -36,7 +38,7 @@ test_script:
   - sbt test
   - ps: Get-ChildItem $env:USERPROFILE
 after_test:
-  - ps: >-
+  - ps: |
       $url = "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)"
       $files = Get-ChildItem '.\target\test-reports\TEST-*.xml'
       foreach ($file in $files) {
@@ -44,6 +46,8 @@ after_test:
       }
 on_success:
   - sbt executable
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 cache:
   - 'C:\Users\appveyor\.m2'
   - 'C:\Users\appveyor\.ivy\cache'
