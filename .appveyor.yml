@@ -29,20 +29,15 @@ install:
       # Following software are installed by default <https://www.appveyor.com/docs/build-environment/#pre-installed-software>
       # - JDK8
       # - Maven
-  - cmd: |
-      SET JAVA_HOME=%ProgramFiles%\Java\jdk1.8.0
-      SET PATH=%JAVA_HOME%\bin;%PATH%
-      SET M2_HOME=%USERPROFILE%\.m2
-      SET 
 build_script:
 #  - sbt compile
   - ps: |
-      $p = Start-Process "sbt" -ArgumentList "compile" -PassThru -Wait
+      $p = Start-Process "sbt" -ArgumentList "compile" -NoNewWindow -PassThru -Wait
       return $p.ExitCode
 test_script:
 #  - sbt test
   - ps: |
-      $p = Start-Process "sbt" -ArgumentList "test" -PassThru -Wait
+      $p = Start-Process "sbt" -ArgumentList "test" -NoNewWindow -PassThru -Wait
       return $p.ExitCode
 after_test:
   - ps: |
