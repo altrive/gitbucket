@@ -36,12 +36,12 @@ install:
       SET 
 build_script:
 #  - sbt compile
-  - ps: 
+  - ps: |
     $p = Start-Process "sbt" -ArgumentList "compile" -PassThru -Wait
     return $p.ExitCode
 test_script:
 #  - sbt test
-  - ps: 
+  - ps: |
     $p = Start-Process "sbt" -ArgumentList "test" -PassThru -Wait
     return $p.ExitCode
 after_test:
