@@ -61,7 +61,7 @@ on_success:
   #     Set-Content -Path $path -Value ''    
   #     Write-Warning "There is 'Delete me to continue build.txt' file has been created on Desktop - delete it to continue the build."
   #     while($true) { if (-not (Test-Path $path)) { break; } else { Start-Sleep -Seconds 1 } }
- cache:
+cache:
   - C:\Users\appveyor\scoop
   - C:\Users\appveyor\.coursier         -> appveyor.yml
   - C:\Users\appveyor\.ivy2\cache
