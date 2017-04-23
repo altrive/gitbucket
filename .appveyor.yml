@@ -54,7 +54,7 @@ artifacts:
 on_success:
   - ps : |
       Write-Host "on_success"
-on_finish:
+# on_finish:
   # - ps: |
   #     # Block RDP
   #     $path = "$($env:USERPROFILE)\Desktop\Delete me to continue build.txt"
