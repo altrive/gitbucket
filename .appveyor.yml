@@ -29,10 +29,11 @@ install:
       # - Maven
   - bat: SET JAVA_OPTS=-Djna.nosys=true
 build_script:
+#  - sbt clean compile
   - sbt compile
 test_script:
 #  - sbt test
-   - ps: runas /trustlevel:0x20000 "sbt test"
+   - sbt testOnly GitBucketCoreModuleSpec
 after_test:
   - ps: |
       $url = "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)"
