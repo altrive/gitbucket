@@ -15,8 +15,6 @@ branches:
 install:
   - ps: |
       Write-Host ("PROCESSOR_ARCHITECTURE = {0}" -f $env:PROCESSOR_ARCHITECTURE)
-      net user /add TestUser Password!
-      net localgroup Administrators Testuser /add
   - ps: |
       (Get-PSProvider 'FileSystem').Home = 'c:\projects\'
       iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
@@ -29,16 +27,12 @@ install:
       # Following software are installed by default <https://www.appveyor.com/docs/build-environment/#pre-installed-software>
       # - JDK8
       # - Maven
+  - bat: |
+      SET __COMPAT_LAYER=RUNASINVOKER
 build_script:
-#  - sbt compile
-  - ps: |
-      $p = Start-Process "sbt" -ArgumentList "compile" -NoNewWindow -PassThru -Wait
-      exit $p.ExitCode
+  - sbt compile
 test_script:
-#  - sbt test
-  - ps: |
-      $p = Start-Process "sbt" -ArgumentList "test" -NoNewWindow -PassThru -Wait
-      exit $p.ExitCode
+  - sbt test
 after_test:
   - ps: |
       $url = "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)"
