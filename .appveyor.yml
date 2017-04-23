@@ -49,9 +49,8 @@ cache:
   - C:\Users\appveyor\.coursier
   - C:\Users\appveyor\.ivy\cache
   - C:\Users\appveyor\.sbt\boot
-  - C:\Users\TestUser\.embedmysql
-  - C:\Users\TestUser\.embedpostgresql
-  
+  - C:\Users\appveyor\.embedmysql
+  - C:\Users\appveyor\.embedpostgresql
 #  - '%LocalAppData%\scoop            -> appveyor.yml'
 #  - '%USERPROFILE%\.m2               -> appveyor.yml'
 #  - '%USERPROFILE%\.ivy2             -> appveyor.yml'
