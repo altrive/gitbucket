@@ -45,8 +45,8 @@ on_success:
   - ps : |
       Write-Host "on_success"
   - sbt executable
-#on_finish:
-#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 cache:
   - C:\Users\appveyor\.coursier         -> appveyor.yml
   - C:\Users\appveyor\.ivy\cache        -> appveyor.yml
