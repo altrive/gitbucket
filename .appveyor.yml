@@ -27,6 +27,7 @@ install:
       # Following software are installed by default <https://www.appveyor.com/docs/build-environment/#pre-installed-software>
       # - JDK8
       # - Maven
+  - bat: SET JAVA_OPTS=-Djna.nosys=true
 build_script:
   - sbt compile
 test_script:
