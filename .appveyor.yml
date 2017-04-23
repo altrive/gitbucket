@@ -10,11 +10,14 @@ services:
 branches:
   except: 
     - gh-pages
-#init:
-#- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-install:
+init:
   - ps: |
-      Write-Host ("PROCESSOR_ARCHITECTURE = {0}" -f $env:PROCESSOR_ARCHITECTURE)
+      # Add
+      net localgroup "Remote Desktop Users" appveyor /ADD 
+      # Remove appveyor account from Administrators group (Required for Embedded Postgres process launch)
+      net localgroup "Administrators"" appveyor /REMOVE
+      #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+install:
   - ps: |
       (Get-PSProvider 'FileSystem').Home = 'c:\projects\'
       if(Test-Path scoop)
@@ -29,11 +32,13 @@ install:
         scoop install scala
         scoop install sbt
       }
+
+
 build_script:
 #  - sbt clean compile
   - sbt compile
 test_script:
-  - sbt test testOnly gitbucket.core.GitBucketCoreModuleSpec.
+  - sbt testOnly gitbucket.core.GitBucketCoreModuleSpec.
 #   - sbt testOnly *GitBucketCoreModuleSpec*
 after_test:
 #  - ps: |
@@ -52,7 +57,13 @@ on_success:
   - ps : |
       Write-Host "on_success"
 on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  - ps: |
+      # Block RDP
+      $path = "$($env:USERPROFILE)\Desktop\Delete me to continue build.txt"
+      Set-Content -Path $path -Value ''    
+      Write-Warning "There is 'Delete me to continue build.txt' file has been created on Desktop - delete it to continue the build."
+      while($true) { if (-not (Test-Path $path)) { break; } else { Start-Sleep -Seconds 1 } }
+      #$blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 cache:
   - C:\Users\appveyor\scoop
   - C:\Users\appveyor\.coursier         -> appveyor.yml
