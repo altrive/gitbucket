@@ -33,7 +33,7 @@ build_script:
   - sbt compile
 test_script:
 #  - sbt test
-   - sbt testOnly *GitBucketCoreModuleSpec*
+#   - sbt testOnly *GitBucketCoreModuleSpec*
 after_test:
   - ps: |
       $url = "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)"
