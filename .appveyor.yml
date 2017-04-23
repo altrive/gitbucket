@@ -15,7 +15,7 @@ init:
       # Add
       net localgroup "Remote Desktop Users" appveyor /ADD
       # Remove appveyor account from Administrators group (Required for Embedded Postgres process launch)
-      net localgroup "Administrators appveyor /REMOVE
+      net localgroup "Administrators appveyor" /REMOVE
       #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 install:
   - ps: |
