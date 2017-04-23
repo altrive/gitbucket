@@ -34,7 +34,7 @@ build_script:
   - sbt compile
 test_script:
 #  - sbt test
-   - sbt testOnly GitBucketCoreModuleSpec
+   - sbt testOnly *GitBucketCoreModuleSpec*
 after_test:
   - ps: |
       $url = "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)"
@@ -46,15 +46,17 @@ on_success:
   - sbt executable
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 cache:
-  - 'C:\Users\appveyor\.coursier'
-  - 'C:\Users\appveyor\.ivy\cache'
-  - 'C:\Users\appveyor\.sbt\boot'
-  - 'C:\Users\TestUser\.coursier'
-  - 'C:\Users\TestUser\.ivy\cache'
-  - 'C:\Users\TestUser\.sbt\boot'
-  - 'C:\Users\TestUser\.embedmysql'
-  - 'C:\Users\TestUser\.embedpostgresql'
+- C:\Users\appveyor\.ivy\cache
+- C:\Users\appveyor\.sbt\boot
+
+cache:
+  - C:\Users\appveyor\.coursier
+  - C:\Users\appveyor\.ivy\cache
+  - C:\Users\appveyor\.sbt\boot
+  - C:\Users\TestUser\.embedmysql
+  - C:\Users\TestUser\.embedpostgresql
   
   
 #  - '%LocalAppData%\scoop            -> appveyor.yml'
