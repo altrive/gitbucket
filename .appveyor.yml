@@ -27,12 +27,11 @@ install:
       # Following software are installed by default <https://www.appveyor.com/docs/build-environment/#pre-installed-software>
       # - JDK8
       # - Maven
-  - bat: |
-      SET __COMPAT_LAYER=RUNASINVOKER
 build_script:
   - sbt compile
 test_script:
-  - sbt test
+#  - sbt test
+   - runas /trustlevel:0x20000 "sbt test"
 after_test:
   - ps: |
       $url = "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)"
