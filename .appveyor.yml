@@ -10,8 +10,8 @@ services:
 branches:
   except: 
     - gh-pages
-#init:
-#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+init:
+- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 install:
   - ps: |
       Write-Host ("PROCESSOR_ARCHITECTURE = {0}" -f $env:PROCESSOR_ARCHITECTURE)
@@ -31,7 +31,7 @@ build_script:
   - sbt compile
 test_script:
 #  - sbt test
-   - runas /trustlevel:0x20000 "sbt test"
+   - ps: runas /trustlevel:0x20000 "sbt test"
 after_test:
   - ps: |
       $url = "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)"
