@@ -17,22 +17,23 @@ install:
       Write-Host ("PROCESSOR_ARCHITECTURE = {0}" -f $env:PROCESSOR_ARCHITECTURE)
   - ps: |
       (Get-PSProvider 'FileSystem').Home = 'c:\projects\'
-      iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
-      scoop update
-      #scoop install openjdk
-      #scoop install ant
-      #scoop install maven
-      scoop install scala
-      scoop install sbt
-      # Following software are installed by default <https://www.appveyor.com/docs/build-environment/#pre-installed-software>
-      # - JDK8
-      # - Maven
-  - bat: SET JAVA_OPTS=-Djna.nosys=true
+      if(Test-Path scoop)
+      {
+         scoop update
+         scoop update scala
+         scoop update sbt
+      }
+      else
+      {
+        iex (new-object net.webclient).downloadstring('https://get.scoop.sh')
+        scoop install scala
+        scoop install sbt
+      }
 build_script:
 #  - sbt clean compile
   - sbt compile
 test_script:
-#  - sbt test
+  - sbt test
 #   - sbt testOnly *GitBucketCoreModuleSpec*
 after_test:
 #  - ps: |
@@ -44,15 +45,16 @@ after_test:
   - sbt executable
 artifacts:
   - path: target\executable\gitbucket.war
-  - path: target\executable\gitbucket.md5
-  - path: target\executable\gitbucket.sha1
-  - path: target\executable\gitbucket.sha256
+  - path: target\executable\gitbucket.war.md5
+  - path: target\executable\gitbucket.war.sha1
+  - path: target\executable\gitbucket.war.sha256
 on_success:
   - ps : |
       Write-Host "on_success"
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 cache:
+  - C:\Users\appveyor\scoop
   - C:\Users\appveyor\.coursier         -> appveyor.yml
   - C:\Users\appveyor\.ivy2\cache
   - C:\Users\appveyor\.sbt\boot
