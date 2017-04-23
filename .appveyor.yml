@@ -41,10 +41,15 @@ after_test:
 #      foreach ($file in $files) {
 #          (New-Object 'System.Net.WebClient').UploadFile($url, (Resolve-Path $file))
 #      }
+  - sbt executable
+artifacts:
+  - path: target\executable\gitbucket.war
+  - path: target\executable\gitbucket.md5
+  - path: target\executable\gitbucket.sha1
+  - path: target\executable\gitbucket.sha256
 on_success:
   - ps : |
       Write-Host "on_success"
-  - sbt executable
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 cache:
@@ -53,8 +58,4 @@ cache:
   - C:\Users\appveyor\.sbt\boot
   - C:\Users\appveyor\.embedmysql
   - C:\Users\appveyor\.embedpostgresql
-artifacts:
-  - path: 'target\executable\gitbucket.war'
-  - path: 'target\executable\gitbucket.md5'
-  - path: 'target\executable\gitbucket.sha1'
-  - path: 'target\executable\gitbucket.sha256'
+
