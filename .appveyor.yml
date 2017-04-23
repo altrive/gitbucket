@@ -33,7 +33,7 @@ build_script:
 #  - sbt clean compile
   - sbt compile
 test_script:
-  - sbt test
+  - sbt test testOnly gitbucket.core.GitBucketCoreModuleSpec.
 #   - sbt testOnly *GitBucketCoreModuleSpec*
 after_test:
 #  - ps: |
