@@ -13,7 +13,6 @@ branches:
 #init:
 #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 install:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - ps: |
       Write-Host ("PROCESSOR_ARCHITECTURE = {0}" -f $env:PROCESSOR_ARCHITECTURE)
   - ps: |
@@ -46,18 +45,12 @@ on_success:
   - sbt executable
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-
-cache:
-- C:\Users\appveyor\.ivy\cache
-- C:\Users\appveyor\.sbt\boot
-
 cache:
   - C:\Users\appveyor\.coursier
   - C:\Users\appveyor\.ivy\cache
   - C:\Users\appveyor\.sbt\boot
   - C:\Users\TestUser\.embedmysql
   - C:\Users\TestUser\.embedpostgresql
-  
   
 #  - '%LocalAppData%\scoop            -> appveyor.yml'
 #  - '%USERPROFILE%\.m2               -> appveyor.yml'
