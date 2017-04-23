@@ -11,12 +11,14 @@ branches:
   except: 
     - gh-pages
 init:
-  - ps: |
-      # Add
-      net localgroup "Remote Desktop Users" appveyor /ADD
-      # Remove appveyor account from Administrators group (Required for Embedded Postgres process launch)
+  # - ps: |   
+  #     # Add service account to "Remote Desktop Users" group (Required for RDP debugging)
+  #     net localgroup "Remote Desktop Users" appveyor /ADD
+  #     iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  - ps: |   
+      # Remove appveyor account from Administrators group (Required to launch Embedded Postgres process)
       net localgroup "Administrators" appveyor /DELETE
-      #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 install:
   - ps: |
       (Get-PSProvider 'FileSystem').Home = 'c:\projects\'
@@ -32,21 +34,17 @@ install:
         scoop install scala
         scoop install sbt
       }
-
-
 build_script:
-#  - sbt clean compile
   - sbt compile
 test_script:
-  - sbt testOnly gitbucket.core.GitBucketCoreModuleSpec.
-#   - sbt testOnly *GitBucketCoreModuleSpec*
+  - sbt test
 after_test:
-#  - ps: |
-#      $url = "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)"
-#      $files = Get-ChildItem '.\target\test-reports\TEST-*.xml' -ErrorAction Ignore
-#      foreach ($file in $files) {
-#          (New-Object 'System.Net.WebClient').UploadFile($url, (Resolve-Path $file))
-#      }
+  - ps: |
+      $url = "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)"
+      $files = Get-ChildItem '.\target\test-reports\TEST-*.xml' -ErrorAction Ignore
+      foreach ($file in $files) {
+          (New-Object 'System.Net.WebClient').UploadFile($url, (Resolve-Path $file))
+      }
   - sbt executable
 artifacts:
   - path: target\executable\gitbucket.war
@@ -57,14 +55,13 @@ on_success:
   - ps : |
       Write-Host "on_success"
 on_finish:
-  - ps: |
-      # Block RDP
-      $path = "$($env:USERPROFILE)\Desktop\Delete me to continue build.txt"
-      Set-Content -Path $path -Value ''    
-      Write-Warning "There is 'Delete me to continue build.txt' file has been created on Desktop - delete it to continue the build."
-      while($true) { if (-not (Test-Path $path)) { break; } else { Start-Sleep -Seconds 1 } }
-      #$blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-cache:
+  # - ps: |
+  #     # Block RDP
+  #     $path = "$($env:USERPROFILE)\Desktop\Delete me to continue build.txt"
+  #     Set-Content -Path $path -Value ''    
+  #     Write-Warning "There is 'Delete me to continue build.txt' file has been created on Desktop - delete it to continue the build."
+  #     while($true) { if (-not (Test-Path $path)) { break; } else { Start-Sleep -Seconds 1 } }
+ cache:
   - C:\Users\appveyor\scoop
   - C:\Users\appveyor\.coursier         -> appveyor.yml
   - C:\Users\appveyor\.ivy2\cache
