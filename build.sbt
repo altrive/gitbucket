@@ -66,6 +66,7 @@ javaOptions in Jetty += "-Dlogback.configurationFile=/logback-dev.xml"
 // Test settings
 //testOptions in Test += Tests.Argument("-l", "ExternalDBTest")
 javaOptions in Test += "-Dgitbucket.home=target/gitbucket_home_for_test"
+javaOptions in Test += "-Djna.nosys=true"
 testOptions in Test += Tests.Setup( () => new java.io.File("target/gitbucket_home_for_test").mkdir() )
 fork in Test := true
 

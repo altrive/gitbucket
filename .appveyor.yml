@@ -10,8 +10,8 @@ services:
 branches:
   except: 
     - gh-pages
-#init:
-#- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+init:
+- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 install:
   - ps: |
       Write-Host ("PROCESSOR_ARCHITECTURE = {0}" -f $env:PROCESSOR_ARCHITECTURE)
