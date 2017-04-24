@@ -7,9 +7,6 @@ services:
 environment:
  global:
    ENABLE_RDP: true
-   PGUSER: postgres
-   PGPASSWORD: Password12!
-
 branches:
   except: 
     - gh-pages
@@ -51,8 +48,8 @@ test_script:
       $cmd = 'mysql -e "create database GitBucket;" --user=root'
       Invoke-Expression "& $cmd"
       #PostgreSQL
-      $env:SET PGUSER=postgres
-      $env:SET PGPASSWORD=Password12!
+      $env:PGUSER=postgres
+      $env:PGPASSWORD=Password12!
       createdb GitBucket
   - sbt test
 after_test:
