@@ -44,13 +44,13 @@ build_script:
 test_script:
   - ps: |
       #MySQL database
-      $env:MYSQL_PWD="Password12!"
-      $cmd = 'mysql -e "create database GitBucket;" --user=root'
+      $env:MYSQL_PWD = 'Password12!'
+      $cmd = 'mysql -e "create database gitbucket;" --user=root'
       Invoke-Expression "& $cmd"
       #PostgreSQL
-      $env:PGUSER=postgres
-      $env:PGPASSWORD=Password12!
-      createdb GitBucket
+      $env:PGUSER = 'postgres'
+      $env:PGPASSWORD='Password12!'
+      createdb gitbucket
   - sbt test
 after_test:
   - ps: |
