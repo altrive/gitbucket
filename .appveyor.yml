@@ -72,5 +72,4 @@ cache:
   - C:\Users\appveyor\.sbt\boot
   # - C:\Users\appveyor\.embedmysql
   # - C:\Users\appveyor\.embedpostgresql
-notifications:
 
