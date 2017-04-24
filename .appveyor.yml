@@ -12,7 +12,8 @@ branches:
     - gh-pages
 init:
   - ps: |
-      if($env:EnableRDP -eq "true") {
+      Write-Host ('{0}' -f $env:ENABLE_RDP)
+      if($env:ENABLE_RDP -eq "true") {
         # Add service account to "Remote Desktop Users" group (Required for RDP debugging)
         net localgroup "Remote Desktop Users" appveyor /ADD
         # Enable Remote Desktop
@@ -58,7 +59,7 @@ on_success:
       Write-Host "on_success"
 on_finish:
   - ps: |
-      if($env:EnableRDP -eq "true") {
+      if($env:ENABLE_RDP -eq 'true') {
         # Wait for User RDP operation completion
         $path = "$($env:USERPROFILE)\Desktop\Delete me to continue build.txt"
         Set-Content -Path $path -Value ''    
