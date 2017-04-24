@@ -70,7 +70,7 @@ class GitBucketCoreModuleSpec extends FunSuite {
 */
     try {
       new Solidbase().migrate(
-        DriverManager.getConnection("jdbc:postgresql://localhost:5432/gitbucket", "sa", "sa"),
+        DriverManager.getConnection("jdbc:postgresql://localhost:5432/gitbucket", "postgres", "Password12!"),
         Thread.currentThread().getContextClassLoader(),
         new PostgresDatabase(),
         new Module(GitBucketCoreModule.getModuleId, GitBucketCoreModule.getVersions)
