@@ -6,7 +6,7 @@ services:
   - mysql
 environment:
  global:
-   ENABLE_RDP: true
+   ENABLE_RDP: false
 branches:
   except: 
     - gh-pages
@@ -24,7 +24,7 @@ install:
   - ps: |
       # Set current directory
       (Get-PSProvider 'FileSystem').Home = 'c:\projects\'
-      if(Test-Path scoop) {
+      if(Test-Path 'C:\Users\appveyor\scoop') {
          # Update existing scoop packages
          scoop update
          scoop update scala
@@ -82,6 +82,6 @@ cache:
   - C:\Users\appveyor\.coursier         -> appveyor.yml
   - C:\Users\appveyor\.ivy2\cache
   - C:\Users\appveyor\.sbt\boot
-  - C:\Users\appveyor\.embedmysql
-  - C:\Users\appveyor\.embedpostgresql
+  # - C:\Users\appveyor\.embedmysql
+  # - C:\Users\appveyor\.embedpostgresql
 

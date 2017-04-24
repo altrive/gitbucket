@@ -44,7 +44,7 @@ class GitBucketCoreModuleSpec extends FunSuite {
 */
     try {
       new Solidbase().migrate(
-        DriverManager.getConnection("jdbc:mysql://localhost:3306/gitbucket?useSSL=false", "root", "Password12!"),
+        DriverManager.getConnection("jdbc:mysql://localhost:3306/gitbucket?useSSL=false", "sa", "sa"),
         Thread.currentThread().getContextClassLoader(),
         new MySQLDatabase(),
         new Module(GitBucketCoreModule.getModuleId, GitBucketCoreModule.getVersions)
@@ -70,7 +70,7 @@ class GitBucketCoreModuleSpec extends FunSuite {
 */
     try {
       new Solidbase().migrate(
-        DriverManager.getConnection("jdbc:postgresql://localhost:5432/gitbucket", "postgres", "Password12!"),
+        DriverManager.getConnection("jdbc:postgresql://localhost:5432/gitbucket", "sa", "sa!"),
         Thread.currentThread().getContextClassLoader(),
         new PostgresDatabase(),
         new Module(GitBucketCoreModule.getModuleId, GitBucketCoreModule.getVersions)
