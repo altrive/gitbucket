@@ -25,6 +25,7 @@ install:
       # Set current directory
       (Get-PSProvider 'FileSystem').Home = 'c:\projects\'
       if(Test-Path 'C:\Users\appveyor\scoop') {
+         $env:Path += ';C:\Users\appveyor\scoop'
          # Update existing scoop packages
          scoop update
          scoop update scala

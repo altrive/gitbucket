@@ -29,55 +29,75 @@ class GitBucketCoreModuleSpec extends FunSuite {
   }
 
   test("Migration MySQL", ExternalDBTest){
-    /*
-    val config = aMysqldConfig(v5_7_latest)
-      .withPort(3306)
-      .withUser("sa", "sa")
-      .withCharset(Charset.UTF8)
-      .withServerVariable("log_syslog", 0)
-      .withServerVariable("bind-address", "127.0.0.1")
-      .build()
 
-    val mysqld = anEmbeddedMysql(config)
-      .addSchema("gitbucket")
-      .start()
-*/
-    try {
-      new Solidbase().migrate(
-        DriverManager.getConnection("jdbc:mysql://localhost:3306/gitbucket?useSSL=false", "sa", "sa"),
-        Thread.currentThread().getContextClassLoader(),
-        new MySQLDatabase(),
-        new Module(GitBucketCoreModule.getModuleId, GitBucketCoreModule.getVersions)
-      )
-    } finally {
-      //mysqld.stop()
+    if(sys.env("APPVEYOR") != "True"){
+      val config = aMysqldConfig(v5_7_latest)
+        .withPort(3306)
+        .withUser("sa", "sa")
+        .withCharset(Charset.UTF8)
+        .withServerVariable("log_syslog", 0)
+        .withServerVariable("bind-address", "127.0.0.1")
+        .build()
+
+      val mysqld = anEmbeddedMysql(config)
+        .addSchema("gitbucket")
+        .start()
+
+      try {
+        new Solidbase().migrate(
+          DriverManager.getConnection("jdbc:mysql://localhost:3306/gitbucket?useSSL=false", "sa", "sa"),
+          Thread.currentThread().getContextClassLoader(),
+          new MySQLDatabase(),
+          new Module(GitBucketCoreModule.getModuleId, GitBucketCoreModule.getVersions)
+        )
+      } finally {
+        mysqld.stop()
+      }
+    }
+    else{
+       new Solidbase().migrate(
+          DriverManager.getConnection("jdbc:mysql://localhost:3306/gitbucket?useSSL=false", "sa", "Password12!"),
+          Thread.currentThread().getContextClassLoader(),
+          new MySQLDatabase(),
+          new Module(GitBucketCoreModule.getModuleId, GitBucketCoreModule.getVersions)
+        )
     }
   }
 
   test("Migration PostgreSQL", ExternalDBTest){
 
-    /*
-    val runtime = PostgresStarter.getDefaultInstance()
-    val config = new PostgresConfig(
-      PRODUCTION,
-      new Net("localhost", 5432),
-      new Storage("gitbucket"),
-      new Timeout(),
-      new Credentials("postgres", "Password12!"))
+    if(sys.env("APPVEYOR") != "True"){
+      val runtime = PostgresStarter.getDefaultInstance()
+      val config = new PostgresConfig(
+        PRODUCTION,
+        new Net("localhost", 5432),
+        new Storage("gitbucket"),
+        new Timeout(),
+        new Credentials("sa", "sa"))
 
-    val exec = runtime.prepare(config)
-    val process = exec.start()
-*/
-    try {
-      new Solidbase().migrate(
-        DriverManager.getConnection("jdbc:postgresql://localhost:5432/gitbucket", "sa", "sa!"),
-        Thread.currentThread().getContextClassLoader(),
-        new PostgresDatabase(),
-        new Module(GitBucketCoreModule.getModuleId, GitBucketCoreModule.getVersions)
-      )
-    } finally {
-      //process.stop()
+      val exec = runtime.prepare(config)
+      val process = exec.start()
+
+      try {
+        new Solidbase().migrate(
+          DriverManager.getConnection("jdbc:postgresql://localhost:5432/gitbucket", "sa", "sa"),
+          Thread.currentThread().getContextClassLoader(),
+          new PostgresDatabase(),
+          new Module(GitBucketCoreModule.getModuleId, GitBucketCoreModule.getVersions)
+        )
+      } finally {
+        process.stop()
+      }
     }
+    else{
+      new Solidbase().migrate(
+          DriverManager.getConnection("jdbc:postgresql://localhost:5432/gitbucket", "postgres", "Password12!"),
+          Thread.currentThread().getContextClassLoader(),
+          new PostgresDatabase(),
+          new Module(GitBucketCoreModule.getModuleId, GitBucketCoreModule.getVersions)
+        )
+    }
+   
   }
 
 }
