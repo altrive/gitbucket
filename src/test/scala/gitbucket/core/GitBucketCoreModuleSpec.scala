@@ -55,12 +55,13 @@ class GitBucketCoreModuleSpec extends FunSuite {
       }
     }
     else{
-       new Solidbase().migrate(
-          DriverManager.getConnection("jdbc:mysql://localhost:3306/gitbucket?useSSL=false", "sa", "Password12!"),
-          Thread.currentThread().getContextClassLoader(),
-          new MySQLDatabase(),
-          new Module(GitBucketCoreModule.getModuleId, GitBucketCoreModule.getVersions)
-        )
+      // DB migration test for AppVeyor
+      new Solidbase().migrate(
+        DriverManager.getConnection("jdbc:mysql://localhost:3306/gitbucket?useSSL=false", "root", "Password12!"),
+        Thread.currentThread().getContextClassLoader(),
+        new MySQLDatabase(),
+        new Module(GitBucketCoreModule.getModuleId, GitBucketCoreModule.getVersions)
+      )
     }
   }
 
@@ -90,12 +91,13 @@ class GitBucketCoreModuleSpec extends FunSuite {
       }
     }
     else{
+      // DB migration test for AppVeyor
       new Solidbase().migrate(
-          DriverManager.getConnection("jdbc:postgresql://localhost:5432/gitbucket", "postgres", "Password12!"),
-          Thread.currentThread().getContextClassLoader(),
-          new PostgresDatabase(),
-          new Module(GitBucketCoreModule.getModuleId, GitBucketCoreModule.getVersions)
-        )
+        DriverManager.getConnection("jdbc:postgresql://localhost:5432/gitbucket", "postgres", "Password12!"),
+        Thread.currentThread().getContextClassLoader(),
+        new PostgresDatabase(),
+        new Module(GitBucketCoreModule.getModuleId, GitBucketCoreModule.getVersions)
+      )
     }
    
   }

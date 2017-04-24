@@ -17,7 +17,7 @@ install:
       (Get-PSProvider 'FileSystem').Home = 'c:\projects\'
       if(Test-Path 'C:\Users\appveyor\scoop') {
          # Set existing scoop shims path
-         $env:Path += ';C:\Users\appveyor\scoop\shims'
+         $env:Path += ';C:\Users\appveyor\scoop\shims\'
          # Update existing scoop packages
          scoop update
          scoop update scala
