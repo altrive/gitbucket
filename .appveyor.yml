@@ -12,7 +12,6 @@ branches:
     - gh-pages
 init:
   - ps: |
-      Write-Host ('{0}' -f $env:ENABLE_RDP)
       if($env:ENABLE_RDP -eq "true") {
         # Add service account to "Remote Desktop Users" group (Required for RDP debugging)
         net localgroup "Remote Desktop Users" appveyor /ADD
@@ -20,7 +19,7 @@ init:
         iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
       }
       # Remove appveyor account from Administrators group (Required to launch Embedded Postgres process)
-      net localgroup "Administrators" appveyor /DELETE
+      #net localgroup "Administrators" appveyor /DELETE
 install:
   - ps: |
       # Set current directory
