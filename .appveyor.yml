@@ -12,6 +12,11 @@ branches:
     - gh-pages
 init:
   - ps: |
+      $acl = Get-Acl 'c:\projects\gitbucket'
+      $permission = ('appveyor',"FullControl","ContainerInherit, ObjectInherit", "None","Allow")
+      $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule $permission
+      $acl.SetAccessRule($accessRule) | Set-Acl 'c:\projects\gitbucket'
+  - ps: |
       if($env:ENABLE_RDP -eq "true") {
         # Add service account to "Remote Desktop Users" group (Required for RDP debugging)
         #net localgroup "Remote Desktop Users" appveyor /ADD
@@ -39,7 +44,10 @@ install:
 build_script:
   - sbt compile
 test_script:
-  - sbt test
+#  - sbt test
+  -ps : |
+      runas /trustlevel:0x20000 "powershell -Command &{sbt test *>&1 > output.txt; exit $LastExitCode;}"
+      type output.txt
 after_test:
   - ps: |
       $url = "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)"
