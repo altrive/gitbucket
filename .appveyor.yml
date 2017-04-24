@@ -39,17 +39,7 @@ install:
 build_script:
   - sbt compile
 test_script:
-#  - sbt test
-  - ps: |
-      # Add NTFS permission to working folder
-      $acl = Get-Acl 'c:\projects\gitbucket'
-      $permission = ('appveyor',"FullControl","ContainerInherit, ObjectInherit", "InheritOnly","Allow")
-      $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule $permission
-      $acl.SetAccessRule($accessRule) | Set-Acl 'c:\projects\gitbucket'
-      # Execute Test in restricted privilege (Required for Postgres testing)
-      runas /trustlevel:0x20000 "powershell -Command &{sbt test *>&1 > output.txt; exit $LastExitCode;}"
-  - ps: |
-      type output.txt
+  - sbt test
 after_test:
   - ps: |
       $url = "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)"
