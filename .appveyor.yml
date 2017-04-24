@@ -14,7 +14,7 @@ init:
   - ps: |
       if($env:ENABLE_RDP -eq "true") {
         # Add service account to "Remote Desktop Users" group (Required for RDP debugging)
-        net localgroup "Remote Desktop Users" appveyor /ADD
+        #net localgroup "Remote Desktop Users" appveyor /ADD
         # Enable Remote Desktop
         iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
       }
