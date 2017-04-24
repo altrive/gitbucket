@@ -6,26 +6,18 @@ services:
   - mysql
 environment:
  global:
-   ENABLE_RDP: false
+   EnableRemoteDesktop: false
 branches:
   except: 
     - gh-pages
 init:
-  - ps: |
-      if($env:ENABLE_RDP -eq "true") {
-        # Add service account to "Remote Desktop Users" group (Required for RDP debugging)
-        #net localgroup "Remote Desktop Users" appveyor /ADD
-        # Enable Remote Desktop
-        iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-      }
-      # Remove appveyor account from Administrators group (Required to launch Embedded Postgres process)
-      #net localgroup "Administrators" appveyor /DELETE
 install:
   - ps: |
       # Set current directory
       (Get-PSProvider 'FileSystem').Home = 'c:\projects\'
       if(Test-Path 'C:\Users\appveyor\scoop') {
-         $env:Path += ';C:\Users\appveyor\scoop'
+         # Set existing scoop shims path
+         $env:Path += ';C:\Users\appveyor\scoop\shims'
          # Update existing scoop packages
          scoop update
          scoop update scala
@@ -37,21 +29,20 @@ install:
         scoop install scala
         scoop install sbt
       }
-  - cmd: |
-        SET PATH=C:\Program Files\MySQL\MySQL Server 5.7\bin\;%PATH%
-        SET PATH=C:\Program Files\PostgreSQL\9.6\bin\;%PATH%
 build_script:
   - sbt compile
-test_script:
+before_test:
   - ps: |
-      #MySQL database
+      # Create MySQL database
+      $env:PATH += ';C:\Program Files\MySQL\MySQL Server 5.7\bin\'
       $env:MYSQL_PWD = 'Password12!'
-      $cmd = 'mysql -e "create database gitbucket;" --user=root'
-      Invoke-Expression "& $cmd"
-      #PostgreSQL
+      Invoke-Expression '& mysql -e "create database gitbucket;" --user=root'
+      # Create PostgreSQL database
+      $env:PATH += ';C:\Program Files\PostgreSQL\9.6\bin\'
       $env:PGUSER = 'postgres'
       $env:PGPASSWORD='Password12!'
       createdb gitbucket
+test_script:
   - sbt test
 after_test:
   - ps: |
@@ -67,16 +58,12 @@ artifacts:
   - path: target\executable\gitbucket.war.sha1
   - path: target\executable\gitbucket.war.sha256
 on_success:
-  - ps : |
-      Write-Host "on_success"
+on_failure:
 on_finish:
   - ps: |
-      if($env:ENABLE_RDP -eq 'true') {
-        # Wait for User RDP operation completion
-        $path = "$($env:USERPROFILE)\Desktop\Delete me to continue build.txt"
-        Set-Content -Path $path -Value ''    
-        Write-Warning "There is 'Delete me to continue build.txt' file has been created on Desktop - delete it to continue the build."
-        while($true) { if (-not (Test-Path $path)) { break; } else { Start-Sleep -Seconds 1 } }
+      if($env:EnableRemoteDesktop){
+        $blockRdp = $true; 
+        iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
       }
 cache:
   - C:\Users\appveyor\scoop
@@ -85,4 +72,5 @@ cache:
   - C:\Users\appveyor\.sbt\boot
   # - C:\Users\appveyor\.embedmysql
   # - C:\Users\appveyor\.embedpostgresql
+notifications:
 
