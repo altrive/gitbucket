@@ -112,14 +112,14 @@ class GitBucketCoreModuleSpec extends FunSuite {
   def getMySqlConnectionInfo = {
     getEnvironmentName match {
 //    case "TravisCI"     => ("localhost", 3306, "gitbucket", "root", ""           , false)
-      case "AppVeyor"     => ("localhost", 3306, "gitbucket", "sa"  , "Password12!", false)
+      case "AppVeyor"     => ("localhost", 3306, "gitbucket", "root", "Password12!", false)
       case _              => ("localhost", 3306, "gitbucket", "sa"  , "sa"         , true)
     }
   }
 
   def getPostgresConnectionInfo = {
     getEnvironmentName match {
-//    case "TravisCI"     => ("localhost", 3306, "gitbucket", "postgres", "",            false)
+//    case "TravisCI"     => ("localhost", 5432, "gitbucket", "postgres", "",            false)
       case "AppVeyor"     => ("localhost", 5432, "gitbucket", "postgres", "Password12!", false)
       case _              => ("localhost", 5432, "gitbucket", "sa"      , "sa",          true)
     }

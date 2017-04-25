@@ -6,7 +6,7 @@ services:
   - mysql
 environment:
  global:
-   EnableRemoteDesktop: false
+   EnableRDP: false
 branches:
   except: 
     - gh-pages
@@ -26,12 +26,13 @@ before_test:
       # Create MySQL database
       $env:PATH += ';C:\Program Files\MySQL\MySQL Server 5.7\bin\'
       $env:MYSQL_PWD = 'Password12!'
-      Invoke-Expression '& mysql -e "create database gitbucket;" --user=root'
+      mysql -e 'CREATE DATABASE IF NOT EXISTS gitbucket;' --user=root
       # Create PostgreSQL database
       $env:PATH += ';C:\Program Files\PostgreSQL\9.6\bin\'
       $env:PGUSER = 'postgres'
       $env:PGPASSWORD='Password12!'
-      createdb gitbucket
+      #createdb gitbucket
+      psql -c 'CREATE DATABASE gitbucket;' -U postgres
 test_script:
   - sbt test
 after_test:
@@ -51,7 +52,7 @@ on_success:
 on_failure:
 on_finish:
   - ps: |
-      if($env:EnableRemoteDesktop){
+      if($env:EnableRDP -eq 'True'){
         $blockRdp = $true; 
         iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
       }
